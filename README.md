@@ -4,6 +4,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/openmv/openmv?color=green)](https://github.com/openmv/openmv/network)
 [![GitHub stars](https://img.shields.io/github/stars/openmv/openmv?color=yellow)](https://github.com/openmv/openmv/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/openmv/openmv?color=orange)](https://github.com/openmv/openmv/issues)
+[![MemBrowse](https://membrowse.com/badge.svg)](https://membrowse.com/public/openmv/openmv)
 
 <img  width="480" src="https://raw.githubusercontent.com/openmv/openmv-media/master/logos/openmv-logo/logo.png">
 

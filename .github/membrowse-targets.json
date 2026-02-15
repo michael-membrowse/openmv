@@ -1,0 +1,92 @@
+{
+  "targets": [
+    {
+      "name": "OPENMV2",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMV2 false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "OPENMV3",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMV3 false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "OPENMV4",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMV4 false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "OPENMV4P",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMV4P false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "OPENMVPT",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMVPT false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "OPENMV_N6",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMV_N6 false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "OPENMV_RT1060",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMV_RT1060 false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/mimxrt.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "OPENMV_AE3",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target OPENMV_AE3 false 0 false",
+      "elf": "build/bin/firmware_M55_HP.elf",
+      "ld": "build/M55_HP/alif.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "ARDUINO_PORTENTA_H7",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target ARDUINO_PORTENTA_H7 false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "ARDUINO_GIGA",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target ARDUINO_GIGA false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    },
+    {
+      "name": "ARDUINO_NICLA_VISION",
+      "setup_cmd": "pip install -r .github/workflows/requirements.txt",
+      "build_script": "source tools/ci.sh && ci_build_target ARDUINO_NICLA_VISION false 0 false",
+      "elf": "build/bin/firmware.elf",
+      "ld": "build/stm.lds",
+      "linker_vars": ""
+    }
+  ]
+}

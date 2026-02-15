@@ -1,0 +1,104 @@
+name: MemBrowse Memory Report
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.set-matrix.outputs.targets }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Load target matrix
+        id: set-matrix
+        run: echo "targets=$(jq -c '.targets' .github/membrowse-targets.json)" >> $GITHUB_OUTPUT
+
+  analyze:
+    needs: setup
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJson(needs.setup.outputs.targets) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Update submodules
+        run: |
+          git submodule update --init --depth=1 --no-single-branch
+          git -C lib/micropython/ submodule update --init --depth=1
+
+      - name: Cache toolchains
+        uses: actions/cache@v5
+        id: cache
+        with:
+          path: |
+            ~/cache/gcc
+            ~/cache/llvm
+            ~/cache/make
+            ~/cache/stedgeai
+          key: 'gcc-14.3.rel1_llvm-18.1.3_make-4.4.1_stedgeai-3.0'
+
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          cache: 'pip'
+          python-version: "3.12.4"
+
+      - name: Install GNU Make
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: source tools/ci.sh && ci_install_gnu_make
+
+      - name: Install GCC toolchain
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: source tools/ci.sh && ci_install_arm_gcc
+
+      - name: Install LLVM toolchain
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: source tools/ci.sh && ci_install_arm_llvm
+
+      - name: Install STEdge AI tools
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: source tools/ci.sh && ci_install_stedgeai ${HOME}/cache/stedgeai
+
+      - name: Install packages
+        run: ${{ matrix.target.setup_cmd }}
+
+      - name: Build
+        run: ${{ matrix.target.build_script }}
+
+      - name: Run MemBrowse analysis
+        id: analyze
+        continue-on-error: true
+        uses: membrowse/membrowse-action@v1
+        with:
+          target_name: ${{ matrix.target.name }}
+          elf: ${{ matrix.target.elf }}
+          ld: ${{ matrix.target.ld }}
+          linker_vars: ${{ matrix.target.linker_vars }}
+          api_key: ${{ secrets.MEMBROWSE_API_KEY }}
+
+      - name: Upload report artifact
+        if: ${{ steps.analyze.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: membrowse-report-${{ matrix.target.name }}
+          path: ${{ steps.analyze.outputs.report_path }}
